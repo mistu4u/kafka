@@ -33,6 +33,19 @@ services:
       - zookeeper
     networks:
       - demo
+  schema_registry:
+    image: confluentinc/cp-schema-registry:latest
+    container_name: schema_registry
+    ports:
+      - "8081:8081"
+    environment:
+      - SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS=PLAINTEXT://kafka:9092
+      - SCHEMA_REGISTRY_HOST_NAME=kafka
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - demo
 
   kafka_ui:
     image: obsidiandynamics/kafdrop:latest
